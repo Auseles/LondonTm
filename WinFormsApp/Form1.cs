@@ -31,13 +31,10 @@ namespace WinFormsApp
         {
             BaseAddress = new Uri("http://worldtimeapi.org/api/timezone/Europe/London"),
         };
-
-        public static Stopwatch watch;
         public Form1()
         {
             InitializeComponent();
             context = this;
-            watch = Stopwatch.StartNew();
             TimerCallback tm = new TimerCallback(TimerTick);
             for (int i = 0; i < 10; i++)
             {

@@ -31,10 +31,12 @@ namespace WinFormsApp
         {
             BaseAddress = new Uri("http://worldtimeapi.org/api/timezone/Europe/London"),
         };
+        public static System.Diagnostics.Stopwatch watch;
         public Form1()
         {
             InitializeComponent();
             context = this;
+            watch = System.Diagnostics.Stopwatch.StartNew();
             TimerCallback tm = new TimerCallback(TimerTick);
             for (int i = 0; i < 10; i++)
             {
@@ -64,18 +66,22 @@ namespace WinFormsApp
         {
             try
             {
-                lock (locker)
-                {
-                    var rest = sharedClient.GetAsync(sharedClient.BaseAddress).Result;
-                    string json = rest.Content.ReadAsStringAsync().Result;
-                    LondonTime deserialized = JsonConvert.DeserializeObject<LondonTime>(json);
-                    context.label1.Invoke((Action)delegate { context.label1.Text = deserialized.datetime; });
-                    succsessTicks++;
-                }
+                //lock (locker)
+                //{
+                var rest = sharedClient.GetAsync(sharedClient.BaseAddress).Result;
+                string json = rest.Content.ReadAsStringAsync().Result;
+                LondonTime deserialized = JsonConvert.DeserializeObject<LondonTime>(json);
+                succsessTicks++;
+                context.label1.Invoke((Action)delegate { context.label1.Text = deserialized.datetime; });
+                context.label2.Invoke((Action)delegate { context.label2.Text = "Кол-во выполненых запросов: " + succsessTicks.ToString() + "    время " + watch.Elapsed; });
+                //}
             }
             catch (HttpRequestException ex)
             {
-                context.label1.Invoke((Action)delegate { "Ошибка подключения".ToString(); });
+                context.label1.Invoke((Action)delegate
+                {
+                    "Ошибка подключения".ToString();
+                });
             }
         }
     }

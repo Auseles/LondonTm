@@ -45,7 +45,7 @@ namespace WinFormsApp
         private void TimerTick(object state)
         {
             timerTicks++;
-            int tasksWaitsStarts = (timerTicks - succsessTicks) * 2;
+            int tasksWaitsStarts = (timerTicks - succsessTicks);
             int tasksRuns = 0;
             for (int i = 0; i < 10; i++)
             {
